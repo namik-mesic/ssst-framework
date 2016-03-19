@@ -1,0 +1,18 @@
+{
+    "name": "mythical/ssst-framework",
+    "authors": [
+        {
+            "name": "Namik Mesic",
+            "email": "namik.mesic@hotmail.com"
+        }
+    ],
+    "require": {
+        "symfony/var-dumper": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "System\\": "System",
+            "App\\": "App"
+        }
+    }
+}
