@@ -103,6 +103,6 @@ class Connection implements ConnectionInterface
      */
     public function createDefaultDriver()
     {
-        return new mysqli('localhost', 'root', '', 'innoframework');
+        return new mysqli('localhost', 'root', '', 'ssst_framework');
     }
 }
