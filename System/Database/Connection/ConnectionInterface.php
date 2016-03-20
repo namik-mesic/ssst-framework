@@ -48,4 +48,11 @@ interface ConnectionInterface
      * @return mixed
      */
     public function createDefaultDriver();
+
+    /**
+     * Returns the last insert id
+     *
+     * @return int
+     */
+    public function getInsertId();
 }

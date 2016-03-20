@@ -163,11 +163,11 @@ class Builder implements BuilderInterface
     }
 
     /**
-     * Insert a given array of values into the specified table
+     * Insert a given array of values and get insert id
      *
      * @param $table
      * @param array $values
-     * @return bool
+     * @return int|false
      */
     public function insert($table, array $values)
     {
@@ -177,7 +177,12 @@ class Builder implements BuilderInterface
 
         $sql = "INSERT INTO {$table} ({$keyString}) VALUES ({$valueString})";
 
-        return $this->connection->query($sql);
+        $status = $this->connection->query($sql);
+
+        if ($status)
+            return $this->connection->getInsertId();
+
+        return false;
     }
 
     /**

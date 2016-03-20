@@ -3,11 +3,12 @@
 use App\Model\User;
 
 include "vendor/autoload.php";
+include "boot.php";
 
-$user = new User;
+$user = User::create([
+    'name' => 'Namik',
+    'email' => 'namik.mesic@hotmail.com',
+    'password' => 'password'
+]);
 
-$user->name = "Namik";
-$user->email = "namik.mesic@hotmail.com";
-$user->password = "superSecretPassword";
-
-$user->save();
+dump($user->getBuilder()->getConnection()->getDriver());

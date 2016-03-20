@@ -132,7 +132,7 @@ abstract class Model
     {
         foreach ($values as $field => $value)
             if (in_array($field, $this->fields))
-                $this->values[$field] = $field;
+                $this->values[$field] = $value;
     }
 
     /**
@@ -146,13 +146,21 @@ abstract class Model
     }
 
     /**
-     * Save the current record to the database
+     * Save the current record to the database and return success status
      *
      * @return bool
      */
     public function save()
     {
-        return $this->builder->insert($this->getTable(), $this->getValues());
+        if ($insertId = $this->builder->insert($this->getTable(), $this->getValues()))
+        {
+            $this->id = $insertId;
+
+            return true;
+        }
+
+        else
+            return false;
     }
 
     /**

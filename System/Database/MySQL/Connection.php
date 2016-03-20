@@ -2,6 +2,7 @@
 
 namespace System\Database\MySQL;
 
+use System\Core\App;
 use System\Database\BadResourceException;
 use mysqli;
 use System\Database\Connection\ConnectionInterface;
@@ -14,17 +15,22 @@ use System\Database\Connection\ConnectionNotOpenException;
 class Connection implements ConnectionInterface
 {
     /**
+     * Native php mysqli driver
+     *
      * @var mysqli
      */
     protected $driver;
 
     /**
+     * Turns mysqli_result to Object[]
+     *
      * @var ObjectAdapter
      */
     protected $adapter;
 
     /**
      * Sets local values
+     *
      * @param mysqli $driver
      * @throws BadResourceException
      */
@@ -97,12 +103,27 @@ class Connection implements ConnectionInterface
     }
 
     /**
-     * Creates a default connection driver
+     * Creates a default connection driver based on config settings
      *
      * @return mysqli
      */
     public function createDefaultDriver()
     {
-        return new mysqli('localhost', 'root', '', 'ssst_framework');
+        return new mysqli(
+            App::config('database_host'),
+            App::config('database_user'),
+            App::config('database_password'),
+            App::config('database_name')
+        );
+    }
+
+    /**
+     * Returns the last insert id
+     *
+     * @return int
+     */
+    public function getInsertId()
+    {
+        return $this->driver->insert_id;
     }
 }
