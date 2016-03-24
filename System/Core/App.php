@@ -66,7 +66,7 @@ class App
     }
 
     /**
-     * Sets an uncommited config value
+     * Sets an uncommitted config value
      *
      * @param $key
      * @param $value
