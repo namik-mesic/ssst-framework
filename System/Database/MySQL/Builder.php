@@ -129,6 +129,39 @@ class Builder implements BuilderInterface
     }
 
     /**
+     * Updates the given record identified by id with values
+     *
+     * @param $table
+     * @param array $values
+     * @param $id
+     * @return bool
+     */
+    public function update($table, array $values, $id)
+    {
+        $sql = "UPDATE {$table} SET ";
+
+        $set = '';
+
+        foreach ($values as $field => $value)
+        {
+            if (is_numeric($value))
+                $value = "{$value}, ";
+
+            else if (is_null($value))
+                $value = "null, ";
+
+            else
+                $value = "'{$value}', ";
+
+            $set .= "{$field} = {$value}";
+        }
+
+        $sql .= rtrim($set, ', ') . " WHERE id = {$id}";
+
+        return $this->getConnection()->query($sql);
+    }
+    
+    /**
      * Refreshes the builder state
      *
      * @return $this
@@ -208,5 +241,19 @@ class Builder implements BuilderInterface
         }
 
         return rtrim($string, ', ');
+    }
+
+    /**
+     * Deletes a record from the given table based on id
+     *
+     * @param string $table
+     * @param int $id
+     * @return bool
+     */
+    public function delete($table, $id)
+    {
+        $sql = "DELETE FROM {$table} WHERE id = {$id}";
+
+        return $this->getConnection()->query($sql);
     }
 }

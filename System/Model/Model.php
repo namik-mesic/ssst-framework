@@ -152,6 +152,35 @@ abstract class Model
      */
     public function save()
     {
+        if ($this->id)
+            return $this->update();
+
+        else
+            return $this->store();
+    }
+
+    /**
+     * Update the currently loaded record with values
+     *
+     * @return bool
+     * @throws ModelNotLoadedException
+     */
+    public function update()
+    {
+        if (!$this->getId())
+            throw new ModelNotLoadedException;
+
+        else
+            return $this->builder->update($this->getTable(), $this->getValues(), $this->getId());
+    }
+
+    /**
+     * Saves a new record and populates the id field
+     *
+     * @return bool
+     */
+    public function store()
+    {
         if ($insertId = $this->builder->insert($this->getTable(), $this->getValues()))
         {
             $this->id = $insertId;
@@ -161,6 +190,21 @@ abstract class Model
 
         else
             return false;
+    }
+
+    /**
+     * Deletes the currently loaded record
+     *
+     * @return bool
+     * @throws ModelNotLoadedException
+     */
+    public function delete()
+    {
+        if (!$this->getId())
+            throw new ModelNotLoadedException;
+
+        else
+            return $this->builder->delete($this->getTable(), $this->getId());
     }
 
     /**

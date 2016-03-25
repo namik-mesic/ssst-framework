@@ -63,4 +63,23 @@ interface BuilderInterface
      * @return bool
      */
     public function insert($table, array $values);
+
+    /**
+     * Updates the given record identified by id with values
+     *
+     * @param string $table
+     * @param array $values
+     * @param int $id
+     * @return bool
+     */
+    public function update($table, array $values, $id);
+
+    /**
+     * Deletes a record from the given table based on id
+     *
+     * @param string $table
+     * @param int $id
+     * @return bool
+     */
+    public function delete($table, $id);
 }

@@ -1,14 +1,9 @@
 <?php
 
-use App\Model\User;
+use System\Routes\Router;
 
 include "vendor/autoload.php";
 include "boot.php";
+include "routes.php";
 
-$user = User::create([
-    'name' => 'Namik',
-    'email' => 'namik.mesic@hotmail.com',
-    'password' => 'password'
-]);
-
-dump($user->getBuilder()->getConnection()->getDriver());
+echo Router::process(REQUEST_URI);
