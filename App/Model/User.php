@@ -5,7 +5,7 @@ namespace App\Model;
 use System\Model\Model;
 
 /**
- * Class User
+ * Class user
  * @package App\Model
  *
  * @property string name
