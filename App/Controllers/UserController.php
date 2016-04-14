@@ -31,11 +31,7 @@ class UserController
      */
     public function index()
     {
-        // $users = User::all();
-
-        $users = $this->builder
-            ->from('users')
-            ->get();
+        
 
         return view('user.index', compact(
             'users'
@@ -49,11 +45,7 @@ class UserController
      */
     public function create()
     {
-        $text = 'Hello world';
-
-       return view('user.create', compact(
-           'text'
-       ));
+       return view('user.create');
     }
 
     /**

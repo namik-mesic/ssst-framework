@@ -11,6 +11,7 @@ use System\Model\Model;
  * @property string name
  * @property string email
  * @property string password
+ * @property string identifier
  */
 class User extends Model
 {
@@ -29,6 +30,7 @@ class User extends Model
     protected $fields = [
         'name',
         'email',
-        'password'
+        'password',
+        'identifier'
     ];
 }

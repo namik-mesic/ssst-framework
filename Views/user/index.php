@@ -17,6 +17,12 @@
             <th>
                 Email
             </th>
+            <th>
+                Identifier
+            </th>
+            <th>
+                Number of posts
+            </th>
         </tr>
         </thead>
         <tbody>
@@ -30,6 +36,13 @@
                 </td>
                 <td>
                     <?php echo $user->email ?>
+                </td>
+                <td>
+                    <?php echo $user->identifier() ?>
+                </td>
+                    <?php echo $user->postCount() ?>
+                <td>
+
                 </td>
             </tr>
         <?php endforeach ?>

@@ -2,7 +2,10 @@
 
 namespace System\Model;
 
+use App\Model\ModelObserver;
+use App\Model\UserObserver;
 use System\Database\MySQL\Builder;
+use System\Observer\Observing;
 
 /**
  * Class Model
@@ -10,6 +13,22 @@ use System\Database\MySQL\Builder;
  */
 abstract class Model
 {
+    use Observing;
+
+    /**
+     * Observable events
+     *
+     * @var array
+     */
+    protected static $observables = [
+        'beforeSave',
+        'afterSave',
+        'beforeDelete',
+        'afterDelete'
+    ];
+
+    protected static $observers = [];
+
     /**
      * The name of the associated table
      *
@@ -54,6 +73,34 @@ abstract class Model
         $this->setValues($values);
 
         $this->builder = $this->getDefaultBuilder();
+    }
+
+    /**
+     * Returns the array of observable events in the class
+     *
+     * @return array
+     */
+    public static function getObservables()
+    {
+        return static::$observables;
+    }
+
+    /**
+     * Return the array of classes that may be observing the observable events
+     *
+     * @return array
+     */
+    public static function getObservers()
+    {
+        return static::$observers;
+    }
+
+    /**
+     * @param $observerClass
+     */
+    public static function addObserver($observerClass)
+    {
+        static::$observers[] = $observerClass;
     }
 
     /**
@@ -152,11 +199,17 @@ abstract class Model
      */
     public function save()
     {
+        $this->observe('beforeSave');
+
         if ($this->id)
-            return $this->update();
+            $result = $this->update();
 
         else
-            return $this->store();
+            $result = $this->store();
+
+        $this->observe('afterSave');
+
+        return $result;
     }
 
     /**
@@ -204,7 +257,15 @@ abstract class Model
             throw new ModelNotLoadedException;
 
         else
-            return $this->builder->delete($this->getTable(), $this->getId());
+        {
+            $this->observe('beforeDelete');
+
+            $result = $this->builder->delete($this->getTable(), $this->getId());
+
+            $this->addObserver('afterDelete');
+
+            return $result;
+        }
     }
 
     /**
